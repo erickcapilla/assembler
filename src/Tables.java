@@ -9,6 +9,7 @@ public class Tables {
   private ArrayList<String[]> dataDirec = new ArrayList<>();
   private ArrayList<String> position = new ArrayList<>();
   private ArrayList<String[]> symbols = new ArrayList<>();
+  private ArrayList<String[]> labels = new ArrayList<>();
   private String fileOut;
 
   public Tables(ArrayList<String[]> tokens, String fileOut) {
@@ -16,6 +17,7 @@ public class Tables {
     this.fileOut = fileOut;
 
     this.getSymbols();
+    this.getLabel();
   }
 
   public void getSymbols() {
@@ -35,8 +37,7 @@ public class Tables {
       j++;
     }
 
-    System.out.println(this.dataDirec.get(2)[0].contains(this.dataDirec.get(0)[0]));
-    if(this.dataDirec.get(1)[0].contains(this.dataDirec.get(1)[0])) {
+    if(this.dataDirec.get(1)[0].contains(this.dataDirec.get(0)[0])) {
       for(int i = Integer.parseInt(this.dataDirec.get(0)[1]) + 1; i < Integer.parseInt(this.dataDirec.get(1)[1]); i++) {
         this.symbols.add(this.tokens.get(i));
       }
@@ -45,7 +46,16 @@ public class Tables {
     writeFileS();
   }
 
-
+  public void getLabel() {
+    if(this.dataDirec.get(3)[0].contains(this.dataDirec.get(2)[0])) {
+      for(int i = Integer.parseInt(this.dataDirec.get(2)[1]) + 1; i < Integer.parseInt(this.dataDirec.get(3)[1]); i++) {
+        if(this.tokens.get(i)[0].contains(":"))
+          this.labels.add(this.tokens.get(i));
+      }
+    }
+    //System.out.println(this.dataDirec.get(3)[0].contains(this.dataDirec.get(2)[0]));
+    this.labels.forEach(l -> System.out.println(Arrays.toString(l)));
+  }
 
   public void writeFileS() {
     try {

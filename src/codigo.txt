@@ -1,6 +1,6 @@
 .data
 numero BYTE 2F
-numero2 BYTE 36
+numero2 BYTE 2A
 .dataEnd
 .code
 Add Ax, Bx
