@@ -1,0 +1,12 @@
+.data
+numero BYTE 2F
+numero2 BYTE 36
+.dataEnd
+.code
+Add Ax, Bx
+Ciclo: Mul Bx
+Add Ax, 3F
+Inc Bx
+Sub Ax, Bx
+JMP Ciclo:
+.codeEnd

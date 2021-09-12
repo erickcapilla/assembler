@@ -1,0 +1,6 @@
+Add Ax, Bx
+Mul Bx
+Add Ax, 3F
+
+Inc Bx
+Sub Ax, Bx
