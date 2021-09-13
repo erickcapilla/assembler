@@ -21,8 +21,6 @@ public class Tables {
   }
 
   public void getSymbols() {
-    String[] colums = { "Simbolo", "Valor", "Longitud" };
-    symbols.add(colums);
     int j = 0;
     for (String[] token : this.tokens) {
       for (String directive : this.directives) {
@@ -55,22 +53,34 @@ public class Tables {
     }
     //System.out.println(this.dataDirec.get(3)[0].contains(this.dataDirec.get(2)[0]));
     this.labels.forEach(l -> System.out.println(Arrays.toString(l)));
+    writeFileL();
   }
 
   public void writeFileS() {
     try {
-      FileWriter file = new FileWriter(this.fileOut);
+      FileWriter file = new FileWriter(this.fileOut + ".sym");
       PrintWriter writer = new PrintWriter(file);
+      writer.println("[Simbolo, Valor, Longitud]");
 
       for (int i = 0; i < this.symbols.size(); i++) {
-        if(i == 0) {
-          writer.println(Arrays.toString(this.symbols.get(i)));
-        } else {
-          int log = this.symbols.get(i)[2].length() <= 2 ? 1 : 2;
-          writer.println("[" + this.symbols.get(i)[0] + ",    " +
-                  this.symbols.get(i)[2] +
-                  ",    " + log + "]");
-        }
+        int log = this.symbols.get(i)[2].length() <= 2 ? 1 : 2;
+        writer.println("[" + this.symbols.get(i)[0] + ",    " +
+                this.symbols.get(i)[2] +
+                ",    " + log + "]");
+      }
+
+      file.close();
+    } catch (Exception e) { e.printStackTrace(); }
+  }
+
+  public void writeFileL() {
+    try {
+      FileWriter file = new FileWriter(this.fileOut + ".lab");
+      PrintWriter writer = new PrintWriter(file);
+      writer.println("[Etiqueta, Valor]");
+
+      for (int i = 0; i < this.labels.size(); i++) {
+        writer.println("[" + this.labels.get(i)[0].replace(":", "") + "]");
       }
       file.close();
     } catch (Exception e) { e.printStackTrace(); }

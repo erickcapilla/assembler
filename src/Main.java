@@ -10,13 +10,13 @@ public class Main {
     /*System.out.print("Ruta/archivo: ");
     String fileIn = sc.nextLine();
 
-    System.out.print("Nombre del archivo/salida: ");
+    System.out.print("Nombre del archivo/salida (sin extencion): ");
     String fileOut = sc.nextLine();*/
 
     Tokens token = new Tokens("src\\codigo.txt", "src\\codigo.esm");
 
     tokens = token.getTokens();
 
-    Tables tables = new Tables(tokens, "src\\codigo.sym");
+    Tables tables = new Tables(tokens, "src\\codigo");
   }
 }
