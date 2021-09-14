@@ -1,12 +1,19 @@
 .data
 numero BYTE 2F
-numero2 BYTE 2A
+dato BYTE 38
 .dataEnd
 .code
-Add Ax, Bx
-Ciclo: Mul Bx
-Add Ax, 3F
+Mov Ax, numero
+Mul Bx
+JMP Ciclo2
+Ciclo1:
+Mov Ax, dato
 Inc Bx
+JMP Ciclo
+Ciclo2:
+Dec Bx
 Sub Ax, Bx
-JMP Ciclo:
+JMP Ciclo1
+Ciclo:
+Push Ax
 .codeEnd

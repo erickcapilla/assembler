@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -17,6 +16,6 @@ public class Main {
 
     tokens = token.getTokens();
 
-    Tables tables = new Tables(tokens, "src\\codigo");
+    Tables tables = new Tables(tokens, "src\\codigo.txt","src\\codigo");
   }
 }
