@@ -1,3 +1,8 @@
+[macroCALCULA]. Hay 1 tokens
+[Mov, Ax, Bx]. Hay 3 tokens
+[Push, Ax]. Hay 2 tokens
+[Dec, Bx]. Hay 2 tokens
+[ENDmacroCALCULA]. Hay 1 tokens
 [data]. Hay 1 tokens
 [numero, BYTE, 2F]. Hay 3 tokens
 [dato, BYTE, 38]. Hay 3 tokens
@@ -16,4 +21,6 @@
 [JMP, Ciclo1]. Hay 2 tokens
 [Ciclo]. Hay 1 tokens
 [Push, Ax]. Hay 2 tokens
+[Inc, Bx]. Hay 2 tokens
+[Mov, Ax, numero]. Hay 3 tokens
 [codeEnd]. Hay 1 tokens

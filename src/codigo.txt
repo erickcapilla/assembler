@@ -1,19 +1,26 @@
+.macroCALCULA
+  Mov Ax, Bx
+  Push Ax
+  Dec Bx
+.ENDmacroCALCULA
 .data
 numero BYTE 2F
 dato BYTE 38
 .dataEnd
 .code
-Mov Ax, numero
-Mul Bx
-JMP Ciclo2
+  Mov Ax, numero
+  Mul Bx
+  JMP Ciclo2
 Ciclo1:
-Mov Ax, dato
-Inc Bx
-JMP Ciclo
+  Mov Ax, dato
+  Inc Bx
+  JMP Ciclo
 Ciclo2:
-Dec Bx
-Sub Ax, Bx
-JMP Ciclo1
+  Dec Bx
+  Sub Ax, Bx
+  JMP Ciclo1
 Ciclo:
-Push Ax
+  Push Ax
+  Inc Bx
+  Mov Ax, numero
 .codeEnd

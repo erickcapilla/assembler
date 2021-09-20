@@ -6,16 +6,16 @@ public class Main {
     Scanner sc = new Scanner(System.in);
     ArrayList<String[]> tokens;
 
-    /*System.out.print("Ruta/archivo: ");
+    System.out.print("Ruta/archivo: ");
     String fileIn = sc.nextLine();
 
     System.out.print("Nombre del archivo/salida (sin extencion): ");
-    String fileOut = sc.nextLine();*/
+    String fileOut = sc.nextLine();
 
-    Tokens token = new Tokens("src\\codigo.txt", "src\\codigo.esm");
+    Tokens token = new Tokens(fileIn, fileOut + ".asm");
 
     tokens = token.getTokens();
 
-    Tables tables = new Tables(tokens, "src\\codigo.txt","src\\codigo");
+    Tables tables = new Tables(tokens, fileIn,fileOut);
   }
 }
