@@ -12,10 +12,12 @@ public class Main {
     System.out.print("Nombre del archivo/salida (sin extencion): ");
     String fileOut = sc.nextLine();
 
-    Tokens token = new Tokens(fileIn, fileOut + ".asm");
+    Tokens token = new Tokens(fileIn, fileOut);
 
     tokens = token.getTokens();
 
     Tables tables = new Tables(tokens, fileIn,fileOut);
+
+    token.writeMacros(token.getMacros());
   }
 }

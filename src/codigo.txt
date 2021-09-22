@@ -2,14 +2,20 @@
   Mov Ax, Bx
   Push Ax
   Dec Bx
-.ENDmacroCALCULA
+.endMacroCALCULA
+.macroEJEMPLO
+  Add Ax, Bx
+  Inc Bx
+  Mov Ax, 4E
+.endMacroEJEMPLO
 .data
-numero BYTE 2F
-dato BYTE 38
+  numero BYTE 2F
+  dato BYTE 38
 .dataEnd
 .code
   Mov Ax, numero
   Mul Bx
+  EJEMPLO()
   JMP Ciclo2
 Ciclo1:
   Mov Ax, dato
@@ -18,6 +24,7 @@ Ciclo1:
 Ciclo2:
   Dec Bx
   Sub Ax, Bx
+  CALCULA()
   JMP Ciclo1
 Ciclo:
   Push Ax

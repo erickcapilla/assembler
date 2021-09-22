@@ -7,6 +7,7 @@ public class Tokens {
   private ArrayList<String[]> tokens = new ArrayList<>();
   private final String []delimiters = { " ", ",", "." };
   private String fileIn, fileOut;
+  private ArrayList<String[]> macros = new ArrayList<>();
 
   public Tokens(String fileIn, String fileOut) {
     this.fileIn = fileIn;
@@ -57,17 +58,14 @@ public class Tokens {
       BufferedReader reader = new BufferedReader(file);
 
       while ((line = reader.readLine()) != null) this.lines.add(line.replaceFirst("  ", "")); //Guarda cada linea del archivo en un ArrayList
-
       reader.close();
-
       this.macro();
-      //this.lines.forEach(l -> System.out.println(l));
     } catch (Exception e) { e.printStackTrace(); }
   }
 
   public void writeFile() {
     try {
-      FileWriter file = new FileWriter(this.fileOut);
+      FileWriter file = new FileWriter(this.fileOut + ".asm");
       PrintWriter writer = new PrintWriter(file);
 
       this.tokens.forEach(t -> writer.println(Arrays.toString(t)
@@ -90,12 +88,16 @@ public class Tokens {
       }
     }
   }
+
   public ArrayList<String[]> getTokens() {
     return this.tokens;
   }
+
   public void macro() {
     ArrayList<String> linesCopy = new ArrayList<>();
     ArrayList<String[]> macroPosition = new ArrayList<>();
+
+    ArrayList<String> macro = new ArrayList<>();
 
     for (int i = 0; i < this.lines.size(); i++) {
       if(this.lines.get(i).toLowerCase().contains("macro")) {
@@ -104,8 +106,54 @@ public class Tokens {
       }
     }
 
+    int index = 0;
+    for(int j = 0; j < macroPosition.size() / 2; j++) {
+      macro.clear();
+      macro.add(macroPosition.get(index)[0].toUpperCase().replace(".MACRO", ""));
+      for(int i = Integer.parseInt(macroPosition.get(index)[1]) + 1; i < Integer.parseInt(macroPosition.get(index+1)[1]); i++) {
+        macro.add(this.lines.get(i));
+      }
+      macros.add(macro.toArray(new String[0]));
+      index += 2;
+    }
 
+    for(int i = Integer.parseInt(macroPosition.get(macroPosition.size()-1)[1]) + 1; i < lines.size(); i++) {
+      if(this.lines.get(i) != "" || this.lines.get(i) != " ") {
+        if(this.lines.get(i).contains("()") || this.lines.get(i).contains(")")) {
+          for(int j = 0; j < macros.size(); j++) {
+            if(this.lines.get(i).contains(macros.get(j)[0])) {
+              for (int k = 1; k < macros.get(j).length; k++) {
+                linesCopy.add(macros.get(j)[k]);
+              }
+            }
+          }
+        } else {
+          linesCopy.add(this.lines.get(i));
+        }
+      }
+    }
 
-    macroPosition.forEach(m -> System.out.println(Arrays.toString(m)));
+    lines.clear();
+    lines.addAll(linesCopy);
+  }
+
+  public void writeMacros(ArrayList<String[]> macros) {
+    try {
+      FileWriter file = new FileWriter(this.fileOut + "Macros.txt");
+      PrintWriter writer = new PrintWriter(file);
+
+      writer.println("MACROS\n");
+      macros.forEach(macro -> {
+        for (String m : macro) {
+          writer.println(m);
+        }
+        writer.println("--------------------------------------");
+      });
+      file.close();
+    } catch (Exception e) { e.printStackTrace(); }
+  }
+
+  public ArrayList<String[]> getMacros() {
+    return macros;
   }
 }

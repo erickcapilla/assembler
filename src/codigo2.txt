@@ -1,9 +1,12 @@
+.macroREPETIR
+  Mov Ax, numero
+  Mul Bx
+.endMacroREPETIR
 .data
   numero BYTE 25
 .dataEnd
 .code
-  Mov Ax, numero
-  Mul Bx
+  REPETIR()
   JMP Siguiente 
 Siguiente:
   Add Ax, 8A

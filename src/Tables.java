@@ -23,7 +23,7 @@ public class Tables {
   public Tables(ArrayList<String[]> tokens, String fileIn, String fileOut) {
     this.tokens =  tokens;
     this.fileOut = fileOut;
-    Tokens newTokens = new Tokens(fileIn, fileOut + ".asm");
+    Tokens newTokens = new Tokens(fileIn, fileOut);
     this.tokensCopy2 = newTokens.getTokens();
 
 
@@ -128,7 +128,7 @@ public class Tables {
         }
       }
     }
-    //memoryPositions.forEach(m -> System.out.println(Arrays.toString(m)));
+    memoryPositions.forEach(m -> System.out.println(Arrays.toString(m)));
     writeFileM();
     writeFileL();
   }
@@ -218,6 +218,5 @@ public class Tables {
       }
       j++;
     }
-    //memoryPositions.forEach(m -> System.out.println(Arrays.toString(m)));
   }
 }
