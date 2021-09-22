@@ -1,0 +1,14 @@
+.macroREPETIR
+  Mov Ax, numero
+  Mul Bx
+.endMacroREPETIR
+.data
+  numero BYTE 25
+.dataEnd
+.code
+  REPETIR()
+  JMP Siguiente 
+Siguiente:
+  Add Ax, 8A
+  Sub Ax, numero  
+.codeEnd

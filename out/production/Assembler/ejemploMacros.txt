@@ -1,0 +1,12 @@
+MACROS
+
+CALCULA
+Mov Ax, Bx
+Push Ax
+Dec Bx
+--------------------------------------
+EJEMPLO
+Add Ax, Bx
+Inc Bx
+Mov Ax, 4E
+--------------------------------------
