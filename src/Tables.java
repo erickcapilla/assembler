@@ -33,7 +33,6 @@ public class Tables {
   }
 
   public void getSymbols() {
-    //this.tokens.forEach(t -> System.out.println(Arrays.toString(t)));
     int j = 0;
     for (String[] token : this.tokens) {
       for (String directive : this.directives) {
@@ -90,19 +89,20 @@ public class Tables {
 
   public void getPosition() {
     int index1 = 0, index2 = 0;
-    for (String[] tokenC : this.tokensCopy) {
-      if(tokenC[tokenC.length - 1].equalsIgnoreCase("xx")) {
+    for (int i = Integer.parseInt(this.dataDirec.get(2)[1]); i < this.tokensCopy.size(); i++) {
+      if(this.tokensCopy.get(i)[this.tokensCopy.get(i).length - 1].equalsIgnoreCase("xx")) {
         for (String[] code : codes) {
-          if(Arrays.toString(tokenC).equalsIgnoreCase("[" + code[0] + "]")) {
+          if(Arrays.toString(this.tokensCopy.get(i)).equalsIgnoreCase("[" + code[0] + "]")) {
             generateMemory(2, index1, index2);
             index2 += 2;
             if(index2 >= 16) {index1++; index2 = 0;}
           }
         }
       }
-      if(!Arrays.toString(tokenC).equalsIgnoreCase("[xx]") && !tokenC[tokenC.length - 1].equalsIgnoreCase("xx")) {
+      if(!Arrays.toString(this.tokensCopy.get(i)).equalsIgnoreCase("[xx]") &&
+              !this.tokensCopy.get(i)[this.tokensCopy.get(i).length - 1].equalsIgnoreCase("xx")) {
         for (String[] code : codes) {
-          if(Arrays.toString(tokenC).equalsIgnoreCase("[" + code[0] + "]" )) {
+          if(Arrays.toString(this.tokensCopy.get(i)).equalsIgnoreCase("[" + code[0] + "]" )) {
             generateMemory(1, index1, index2);
             index2++;
             if(index2 >= 16) {index1++; index2 = 0;}
@@ -110,8 +110,6 @@ public class Tables {
         }
       }
     }
-
-    //System.out.println(memoryPositions.size());
 
     setPosition();
     int empty = 0;
@@ -123,16 +121,17 @@ public class Tables {
     for (String[] tok : this.tokensCopy2) {
       for (String[] label : labels) {
         if(tok[0].contentEquals("JMP") && tok[tok.length - 1].contentEquals(label[0].replace(":", ""))) {
-          for (String[] memoryPosition : memoryPositions) {
-            if(memoryPosition[1].equalsIgnoreCase("")) {
-              memoryPosition[1] = label[1];
+          for (int i = 0; i < memoryPositions.size(); i++) {
+            if(memoryPositions.get(i)[1].equalsIgnoreCase("")) {
+              memoryPositions.get(i)[1] = label[1];
+              memoryPositions.get(i-1)[2] = "*";
               break;
             }
           }
         }
       }
     }
-    //memoryPositions.forEach(m -> System.out.println(Arrays.toString(m)));
+    memoryPositions.forEach(m -> System.out.println(Arrays.toString(m)));
     writeFileM();
     writeFileL();
   }
@@ -172,7 +171,7 @@ public class Tables {
     try {
       FileWriter file = new FileWriter(this.fileOut + ".hex");
       PrintWriter writer = new PrintWriter(file);
-      writer.println("[Memoria, Codigos]");
+      writer.println("[Memoria, Codigos, Mod]");
 
       memoryPositions.forEach(m -> writer.println(Arrays.toString(m)));
 
@@ -182,7 +181,7 @@ public class Tables {
 
   public void generateMemory(int spaces, int index1, int index2) {
     for(int i = 0; i < spaces; i++) {
-      String[] num = { hex[index1]+hex[index2], "" };
+      String[] num = { hex[index1]+hex[index2], "", "" };
       memoryPositions.add(num);
       index2++;
     }
@@ -193,7 +192,6 @@ public class Tables {
 
     for (int i = 0; i < memoryPositions.size(); i++) {
       j++;
-      //System.out.println(Arrays.toString(tokens.get(j)));
       for (String[] c : codes) {
         if(Arrays.toString(tokens.get(j)).equalsIgnoreCase("[" + c[0] + "]" )) {
           memoryPositions.get(i)[1] = c[1];
@@ -211,7 +209,6 @@ public class Tables {
 
       if(tokensCopy2.get(j)[tokens.get(j).length - 1].length() == 2 &&
               !tokensCopy2.get(j)[tokens.get(j).length - 1].contains("x")) {
-        //System.out.println(tokensCopy2.get(j)[tokensCopy2.get(j).length - 1]);
         i++;
         memoryPositions.get(i)[1] = tokensCopy2.get(j)[tokensCopy2.get(j).length - 1];
       }
@@ -223,8 +220,10 @@ public class Tables {
           }
         }
       }
-      //System.out.println(Arrays.toString(memoryPositions.get(i)));
-      //memoryPositions.forEach(m -> System.out.println(Arrays.toString(m)));
     }
+  }
+
+  public ArrayList<String[]> getMemoryPositions() {
+    return memoryPositions;
   }
 }
