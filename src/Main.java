@@ -18,6 +18,6 @@ public class Main {
 
     Tables tables = new Tables(tokens, fileIn,fileOut);
 
-    token.writeMacros(token.getMacros());
+    //token.writeMacros(token.getMacros());
   }
 }

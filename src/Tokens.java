@@ -13,24 +13,24 @@ public class Tokens {
     this.fileIn = fileIn;
     this.fileOut = fileOut;
 
+    this.readFile(this.fileIn); //Leer el archivo
     this.getToken();
+    this.writeFile();
+    this.macro();
   }
 
   public void getToken() {
+    this.tokens.clear();
     String[] row;
 
-    readFile(this.fileIn); //Leer el archivo
-
-    for (String line : this.lines) {
+    for (String line : this.lines) { //Recorre cada linea del archivo leido
       for (String delimiter : this.delimiters) {
         String[] split = line.split(delimiter);
         this.splitLine.addAll(Arrays.asList(split));
       }
 
       for (int i = 0; i < this.splitLine.size(); i++) {
-        if(this.splitLine.get(i).contains(" ") || this.splitLine.isEmpty() || this.splitLine.get(i).contains("  ")) {
-          this.splitLine.remove(i);
-        }
+        if(this.splitLine.get(i).contains(" ")) this.splitLine.remove(i);
       }
 
       for (int i = 0; i < this.splitLine.size(); i++) {
@@ -46,8 +46,6 @@ public class Tokens {
       this.tokens.add(row);
       this.splitLine.clear();
     }
-
-    this.writeFile();
   }
 
   public void readFile(String source) {
@@ -57,9 +55,11 @@ public class Tokens {
       FileReader file = new FileReader(source);
       BufferedReader reader = new BufferedReader(file);
 
-      while ((line = reader.readLine()) != null) this.lines.add(line.replaceFirst("  ", "")); //Guarda cada linea del archivo en un ArrayList
+      while ((line = reader.readLine()) != null) {
+        if(!line.equalsIgnoreCase("")) this.lines.add(line.trim().replaceAll("\\s{2,}", " "));
+      }
+
       reader.close();
-      this.macro();
     } catch (Exception e) { e.printStackTrace(); }
   }
 
@@ -74,11 +74,12 @@ public class Tokens {
       file.close();
     } catch (Exception e) { e.printStackTrace(); }
   }
+
   public void deleteDuplicate() {
     for (int i = 0; i < this.splitLine.size(); i++) {
       int count = 0;
       for (int j = 0; j < this.splitLine.size(); j++) {
-        if(this.splitLine.get(i).equalsIgnoreCase(this.splitLine.get(j))){
+        if(this.splitLine.get(i).equalsIgnoreCase(this.splitLine.get(j))) {
           count++;
           if(count >= 2) {
             count = 0;
@@ -89,14 +90,9 @@ public class Tokens {
     }
   }
 
-  public ArrayList<String[]> getTokens() {
-    return this.tokens;
-  }
-
-  public void macro() {
+ public void macro() {
     ArrayList<String> linesCopy = new ArrayList<>();
     ArrayList<String[]> macroPosition = new ArrayList<>();
-
     ArrayList<String> macro = new ArrayList<>();
 
     for (int i = 0; i < this.lines.size(); i++) {
@@ -117,7 +113,7 @@ public class Tokens {
       index += 2;
     }
 
-    for(int i = Integer.parseInt(macroPosition.get(macroPosition.size()-1)[1]) + 1; i < lines.size(); i++) {
+    for(int i = 0; i < lines.size(); i++) {
       if(this.lines.get(i) != "" || this.lines.get(i) != " ") {
         if(this.lines.get(i).contains("()") || this.lines.get(i).contains(")")) {
           for(int j = 0; j < macros.size(); j++) {
@@ -135,9 +131,56 @@ public class Tokens {
 
     lines.clear();
     lines.addAll(linesCopy);
+    this.tokens.clear();
+    this.getToken();
+    /*this.tokens.forEach(t -> System.out.println(Arrays.toString(t)));
+    System.out.println("---------------------------------------------------");*/
   }
 
-  public void writeMacros(ArrayList<String[]> macros) {
+  /*public void macro() {
+    ArrayList<String[]> linesCopy = new ArrayList<>();
+    ArrayList<String[]> macroPosition = new ArrayList<>();
+    ArrayList<String> macro = new ArrayList<>();
+
+    for (int i = 0; i < this.tokens.size(); i++) {
+      if(this.tokens.get(i)[0].toLowerCase().contains("macro")) {
+        String[] position = { this.tokens.get(i)[0], String.valueOf(i) };
+        macroPosition.add(position);
+      }
+    }
+
+    int index = 0;
+    for(int j = 0; j < macroPosition.size() / 2; j++) {
+      macro.clear();
+      macro.add(macroPosition.get(index)[0].toUpperCase().replace(".MACRO", ""));
+      for(int i = Integer.parseInt(macroPosition.get(index)[1]) + 1; i < Integer.parseInt(macroPosition.get(index+1)[1]); i++) {
+        macro.add(this.lines.get(i));
+      }
+      macros.add(macro.toArray(new String[0]));
+      //macros.forEach(m -> System.out.println(Arrays.toString(m)));
+      index += 2;
+    }
+
+    for(int i = Integer.parseInt(macroPosition.get(macroPosition.size()-1)[1]) + 1; i < this.tokens.size(); i++) {
+      if(this.tokens.get(i)[0].contains("()")) {
+        for(int j = 0; j < this.macros.size(); j++) {
+          if(this.macros.get(j)[0].contains(this.tokens.get(i)[0].replace("()", ""))) {
+            for (int k = 1; k < this.macros.get(j).length; k++) {
+              linesCopy.add(macros.get(j)[k].to);
+            }
+          }
+        }
+      } else {
+        linesCopy.add(this.tokens.get(i));
+      }
+    }
+
+    //linesCopy.forEach(l -> System.out.println(Arrays.toString(l)));
+    this.tokens.clear();
+    this.tokens.addAll(linesCopy);
+  }*/
+
+  /*public void writeMacros(ArrayList<String[]> macros) {
     try {
       FileWriter file = new FileWriter(this.fileOut + "Macros.txt");
       PrintWriter writer = new PrintWriter(file);
@@ -151,9 +194,13 @@ public class Tokens {
       });
       file.close();
     } catch (Exception e) { e.printStackTrace(); }
-  }
+  }*/
 
   public ArrayList<String[]> getMacros() {
     return macros;
+  }
+
+  public ArrayList<String[]> getTokens() {
+    return this.tokens;
   }
 }
