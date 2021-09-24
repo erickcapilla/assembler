@@ -18,6 +18,17 @@ public class Main {
 
     Tables tables = new Tables(tokens, fileIn,fileOut);
 
-    //token.writeMacros(token.getMacros());
+    System.out.print("Ejecutar Cargador [Y/N]: ");
+    String option = sc.nextLine();
+
+    if(option.equalsIgnoreCase("y")) {
+      System.out.print("Memoria libre: ");
+      String position = sc.nextLine();
+      if(position.length() < 2) position = "0" + position;
+      Loader loader = new Loader(tables.getMemoryPositions(), position, fileOut);
+    } else {
+      System.exit(0);
+    }
+
   }
 }
