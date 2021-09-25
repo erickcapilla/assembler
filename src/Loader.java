@@ -44,6 +44,7 @@ public class Loader {
     }
 
     this.jumps();
+    this.newMemory.forEach(m -> System.out.println(Arrays.toString(m)));
     writeFile();
   }
 
