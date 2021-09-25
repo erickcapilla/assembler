@@ -134,6 +134,7 @@ public class Tables {
     memoryPositions.forEach(m -> System.out.println(Arrays.toString(m)));
     writeFileM();
     writeFileL();
+    System.out.println("¡Archivos generados con exito! (.asm, .hex, .lab, .sym)");
   }
 
   public void writeFileS() {

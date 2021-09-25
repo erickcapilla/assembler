@@ -25,8 +25,8 @@ public class Loader {
     int index2 = hexa.indexOf(String.valueOf(position.toUpperCase().charAt(1)));
 
     for(int i = 0; i < this.memory.size(); i++) {
-      String[] mem = { "", this.memory.get(i)[1] };
-      this.newMemory.add(mem);
+      //String[] mem = { "", this.memory.get(i)[1] };
+      this.newMemory.add(this.memory.get(i));
       this.newMemory.get(i)[0] = String.valueOf(position).toUpperCase();
       index2++;
       if(index1 >= 15 && index2 > 15) {
@@ -46,6 +46,7 @@ public class Loader {
     this.jumps();
     this.newMemory.forEach(m -> System.out.println(Arrays.toString(m)));
     writeFile();
+    System.out.println("¡Relocalización exitosa, Archivo generado! (.rlz)");
   }
 
   public String generateMemory(int index1, int index2) {

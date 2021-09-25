@@ -41,6 +41,8 @@ public class Main {
 
           if(exe) {
             Loader loader = new Loader(tables.getMemoryPositions(), position, fileOut);
+
+            load = false;
           }
         }
       } while (load);
